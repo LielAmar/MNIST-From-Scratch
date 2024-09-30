@@ -2,7 +2,7 @@ from typing import Literal
 
 import numpy as np
 
-from src.nn.losses.loss import Loss
+from src.losses.loss import Loss
 
 
 class MeanSquaredError(Loss):

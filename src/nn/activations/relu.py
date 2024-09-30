@@ -22,7 +22,7 @@ class ReLU(Activation):
 
         return self.output
 
-    def backward(self, dL_dout: np.ndarray) -> np.ndarray:
+    def backward(self, dloss_dout: np.ndarray) -> np.ndarray:
         """
         The derivative of ReLU is 1 for every x where x > 0 and 0 for x <= 0.
 
@@ -36,4 +36,4 @@ class ReLU(Activation):
 
         dx_dout = self.input > 0  # Local gradient
 
-        return dL_dout * dx_dout
+        return dloss_dout * dx_dout

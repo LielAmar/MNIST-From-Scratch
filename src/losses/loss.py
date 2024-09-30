@@ -5,7 +5,6 @@ import numpy as np
 
 
 class Loss(ABC):
-
     def __init__(self, reduction: Literal['sum', 'mean'] = 'mean'):
         self.reduction = reduction
 

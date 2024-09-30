@@ -15,5 +15,5 @@ class Activation(NNElement):
         pass
 
     @abstractmethod
-    def backward(self, dL_dout: np.ndarray) -> np.ndarray:
+    def backward(self, dloss_dout: np.ndarray) -> np.ndarray:
         pass

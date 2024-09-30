@@ -5,19 +5,16 @@ from src.nn.layers.layer import Layer
 
 class Linear(Layer):
     def __init__(self, input_dimension: int, output_dimension: int, include_bias: bool = True):
-        super().__init__()
+        super().__init__(include_bias)
 
         self.input_dimension = input_dimension
         self.output_dimension = output_dimension
 
-        self.include_bias = include_bias
+        # Starting off with random weights (using Xavier Initialization)
+        self.weights = np.random.randn(self.output_dimension, self.input_dimension) * np.sqrt(
+            2 / (self.input_dimension + self.output_dimension))
 
-        # Starting off with random weights and random bias
-        # Reference: https://medium.com/@Coursesteach/deep-learning-part-27-random-initialization-b25ef8df8334
-        # "Section 2 - Random Initialization"
-        self.weights = np.random.rand(self.output_dimension, self.input_dimension) * 0.01
-
-        if include_bias:
+        if self.include_bias:
             self.bias = np.zeros(shape=(self.output_dimension,))
 
     def forward(self, input: np.ndarray) -> np.ndarray:
@@ -30,7 +27,7 @@ class Linear(Layer):
 
         return self.output
 
-    def backward(self, dL_dout: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def backward(self, dloss_dout: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         Backward pass for the Linear layer.
         It needs to compute 3 things:
@@ -51,13 +48,13 @@ class Linear(Layer):
         """
 
         # Gradient of the loss with respect to the weights
-        dL_dW = dL_dout.T @ self.input
+        dloss_dweights = dloss_dout.T @ self.input
 
         # Gradient of the loss with respect to the bias (if bias is included)
         # We sum the gradients of all the samples in the batch because we added the bias to every sample, and they all contributed to the loss.
-        dL_db = np.sum(dL_dout, axis=0) if self.include_bias else None
+        dloss_dbias = np.sum(dloss_dout, axis=0) if self.include_bias else None
 
         # Gradient of the loss with respect to the input
-        dL_dinput = dL_dout @ self.weights
+        dloss_dx = dloss_dout @ self.weights
 
-        return dL_dinput, dL_dW, dL_db
+        return dloss_dx, dloss_dweights, dloss_dbias

@@ -21,12 +21,12 @@ class Sigmoid(Activation):
         self.output = 1 / (1 + np.exp(-input))
         return self.output
 
-    def backward(self, dL_dout: np.ndarray) -> np.ndarray:
+    def backward(self, dloss_dout: np.ndarray) -> np.ndarray:
         """
         The derivative of Sigmoid is (sigmoid(x) * (1 - sigmoid(x)))
 
         Thus, using the chain rule, the derivative of the loss with respect to the input of the Sigmoid layer is:
-        dL_dx = dL_dout * dx_dout = dL_dout * (sigmoid(x) * (1 - sigmoid(x)))
+        dloss_dx = dL_dout * dx_dout = dL_dout * (sigmoid(x) * (1 - sigmoid(x)))
         where dL_dout is the derivative of the loss with respect to the output of the Sigmoid layer and dx_dout is the derivative of the Sigmoid function.
 
         * Remember that in backpropagation, we are given the derivative of the loss with respect to the output of the Sigmoid layer (dL_dout)
@@ -35,4 +35,4 @@ class Sigmoid(Activation):
 
         dx_dout = self.output * (1 - self.output)  # Local gradient
 
-        return dL_dout * dx_dout
+        return dloss_dout * dx_dout

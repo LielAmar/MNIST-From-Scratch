@@ -30,7 +30,7 @@ class Softmax(Activation):
         self.output = exp_values / exp_sums
         return self.output
 
-    def backward(self, dL_dout: np.ndarray) -> np.ndarray:
+    def backward(self, dloss_dout: np.ndarray) -> np.ndarray:
         """
         Since the Softmax function is used alongside Cross-Entropy loss, and Cross-Entropy loss's derivative
         is already with respect to the logits (input of the Softmax layer), we can directly use the derivative
@@ -40,4 +40,4 @@ class Softmax(Activation):
         dL_dx = dL_dout
         """
 
-        return dL_dout
+        return dloss_dout
